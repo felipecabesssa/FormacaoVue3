@@ -1,10 +1,10 @@
 <template>
-  <main class="columns is-gaples is-multiline">
+  <main class="columns is-gaples is-multiline" :class="{ 'modo-escuro': modoEscuroAtivo }">
     <div class="column is-one-quarter">
-      <BarraLateral />
+      <BarraLateral @aoTemaAlterado="trocarTema" />
     </div>
 
-    <div class="column is-three-quarter">
+    <div class="column is-three-quarter conteudo">
       <Formulario @aoSalvarTarefa="salvarTarefa" />
       <div class="lista">
         <Tarefa
@@ -12,7 +12,7 @@
           :key="index"
           :tarefa="tarefa"
         />
-        <Box v-if="listaEstaVazia"> Você não está muito produtivo hoje :( </Box>
+        <Box v-if="listaEstaVazia"><p class="corTexto">Você não está muito produtivo hoje :( </p></Box>
       </div>
     </div>
   </main>
@@ -37,6 +37,7 @@ export default defineComponent({
   data() {
     return {
       tarefas: [] as ITarefa[],
+      modoEscuroAtivo: true
     };
   },
   computed: {
@@ -48,6 +49,9 @@ export default defineComponent({
     salvarTarefa(tarefa: ITarefa) {
       this.tarefas.push(tarefa);
     },
+    trocarTema(modoEscuroAtivo: boolean) {
+      this.modoEscuroAtivo = modoEscuroAtivo
+    }
   },
 });
 </script>
@@ -55,5 +59,19 @@ export default defineComponent({
 <style>
 .lista {
   padding: 1.25rem;
+}
+main {
+  --bg-primario: #fff;
+  --texto-primario: #000;
+}
+main.modo-escuro {
+  --bg-primario: #22272e;
+  --texto-primario: #fff;
+}
+.conteudo {
+  background-color: var(--bg-primario);
+}
+.corTexto{
+  color: var(--texto-primario);
 }
 </style>
