@@ -7,7 +7,7 @@
       <i class="fa-solid fa-moon"><p>{{ textoBotao }}</p></i>
     </button>
     <nav class="panel mt-5">
-      <ul>
+      <ul class="display">
         <li>
           <router-link to="/" class="link">
             <i class="fas fa-tasks"></i>
@@ -90,5 +90,9 @@ p{
 }
 .link.router-link-active {
   color: #dbe91f
+}
+.display{
+    display: flex;
+    justify-content: space-around;
 }
 </style>
