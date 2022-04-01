@@ -38,16 +38,16 @@ export const store = createStore<Estado>({
         [EXCLUIR_PROJETO](state, id: string) {
             state.projetos = state.projetos.filter((proj) => proj.id != id);
         },
-        [NOTIFICAR] (state, novaNotificacao: INotificacao) {
-
-            novaNotificacao.id = new Date().getTime()
-            state.notificacoes.push(novaNotificacao)
+        [NOTIFICAR](state, novaNotificacao: INotificacao) {
+            novaNotificacao.id = new Date().getTime();
+            state.notificacoes.push(novaNotificacao);
 
             setTimeout(() => {
-                state.notificacoes = state.notificacoes.filter(notificacao => notificacao.id != novaNotificacao.id)
-            }, 3000)
-
-        }
+                state.notificacoes = state.notificacoes.filter(
+                    (notificacao) => notificacao.id != novaNotificacao.id
+                );
+            }, 3000);
+        },
     },
 });
 
