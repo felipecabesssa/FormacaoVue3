@@ -13,12 +13,9 @@
                 />
             </div>
             <div class="field">
-                <button class="button" type="submit">
-                    Salvar
-                </button>
+                <button class="button" type="submit">Salvar</button>
             </div>
         </form>
-
     </section>
 </template>
 
@@ -26,59 +23,65 @@
 import { defineComponent } from "vue";
 import { useStore } from "@/store";
 
-import { ALTERA_PROJETO, ADICIONA_PROJETO } from "@/store/tipo-mutacoes";
+import { ALTERAR_PROJETO } from "@/store/tipos-acoes";
 import { TipoNotificacao } from "@/interfaces/INotificacao";
 
-import useNotificador from '@/hooks/notificador'
-
+import useNotificador from "@/hooks/notificador";
+import { CADASTRAR_PROJETO } from "@/store/tipos-acoes";
 
 export default defineComponent({
     name: "Formulario",
     props: {
         id: {
-            type: String
-        }
+            type: String,
+        },
     },
     mounted() {
-        if(this.id) {
-            const projeto = this.store.state.projetos.find(proj => proj.id == this.id)
-            this.nomeDoProjeto = projeto?.nome || ''
+        if (this.id) {
+            const projeto = this.store.state.projetos.find(
+                (proj) => proj.id == this.id
+            );
+            this.nomeDoProjeto = projeto?.nome || "";
         }
     },
     data() {
         return {
-            nomeDoProjeto: '',
-        }
+            nomeDoProjeto: "",
+        };
     },
     methods: {
         salvar() {
             if (this.id) {
-                this.store.commit(ALTERA_PROJETO, {
+                this.store.dispatch(ALTERAR_PROJETO, {
                     id: this.id,
-                    nome: this.nomeDoProjeto
-                })
+                    nome: this.nomeDoProjeto,
+                }).then(() => this.lidarComSucesso());
             } else {
-                this.store.commit(ADICIONA_PROJETO, this.nomeDoProjeto)
+                this.store
+                    .dispatch(CADASTRAR_PROJETO, this.nomeDoProjeto)
+                    .then(() => this.lidarComSucesso());
             }
-            this.nomeDoProjeto = '';
-            this.notificar(TipoNotificacao.SUCESSO, 'Show', 'Foi')
-            this.$router.push('/projetos')
-        }
+        },
+        lidarComSucesso() {
+            this.nomeDoProjeto = "";
+            this.notificar(TipoNotificacao.SUCESSO, "Show", "Foi");
+            this.$router.push("/projetos");
+        },
     },
     setup() {
-        const store = useStore()
-        const { notificar } = useNotificador()
+        const store = useStore();
+        const { notificar } = useNotificador();
         return {
             store,
-            notificar
-        }
-    }
+            notificar,
+        };
+    },
 });
 </script>
 
 <style scoped>
-
-.title, .label{
+.title,
+.label {
     color: var(--texto-primario);
 }
 .table {

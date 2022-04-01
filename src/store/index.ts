@@ -9,8 +9,13 @@ import {
     EXCLUIR_PROJETO,
     NOTIFICAR,
 } from "./tipo-mutacoes";
-import { OBTER_PROJETOS } from "./tipos-acoes";
-import http from "@/http"
+import {
+    CADASTRAR_PROJETO,
+    OBTER_PROJETOS,
+    ALTERAR_PROJETO,
+    REMOVER_PROJETO,
+} from "./tipos-acoes";
+import http from "@/http";
 
 interface Estado {
     projetos: IProjeto[];
@@ -42,7 +47,7 @@ export const store = createStore<Estado>({
             state.projetos = state.projetos.filter((proj) => proj.id != id);
         },
         [DEFINIR_PROJETOS](state, projetos: IProjeto[]) {
-            state.projetos = projetos
+            state.projetos = projetos;
         },
         [NOTIFICAR](state, novaNotificacao: INotificacao) {
             novaNotificacao.id = new Date().getTime();
@@ -56,12 +61,24 @@ export const store = createStore<Estado>({
         },
     },
     actions: {
-        [OBTER_PROJETOS] ({ commit }) {
-            http.get('projetos')
-                .then(resposta => commit(DEFINIR_PROJETOS, resposta.data)
-                )
-        }
-    }
+        [OBTER_PROJETOS]({ commit }) {
+            http.get("projetos").then((resposta) =>
+                commit(DEFINIR_PROJETOS, resposta.data)
+            );
+        },
+        [CADASTRAR_PROJETO](contexto, nomeDoProjeto: string) {
+            return http.post("/projetos", {
+                nome: nomeDoProjeto,
+            });
+        },
+        [ALTERAR_PROJETO](contexto, projeto: IProjeto) {
+            return http.put(`/projetos/${projeto.id}`, projeto);
+        },
+        [REMOVER_PROJETO]({ commit }, id: string) {
+            return http.delete(`/projetos/${id}`)
+                .then(() => commit(EXCLUIR_PROJETO, id))
+        },
+    },
 });
 
 export function useStore(): Store<Estado> {
