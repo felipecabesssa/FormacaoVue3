@@ -20,5 +20,16 @@
       "nome": "ByteBank",
       "id": 5
     }
+  ],
+  "tarefas": [
+      {
+          "id": 1,
+          "duracaoEmSegundos": 120,
+          "descricao": "Configuração do ambiente",
+          "projeto": {
+              "id": 1,
+              "nome": "Alura Tracker 3.0"
+          }
+      }
   ]
 }

@@ -60,7 +60,7 @@ export default defineComponent({
             projetos: computed(() => store.state.projetos),
             store
         };
-    },
+    }
 });
 </script>
 
