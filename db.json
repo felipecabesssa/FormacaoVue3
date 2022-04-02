@@ -18,14 +18,14 @@
     },
     {
       "id": 5,
-      "nome": "ByteBank2"
+      "nome": "Formação Vue3 - edit"
     }
   ],
   "tarefas": [
     {
       "id": 1,
       "duracaoEmSegundos": 120,
-      "descricao": "Configuração",
+      "descricao": "Configuração Finaal",
       "projeto": {
         "id": 1,
         "nome": "Alura Tracker 3.0"
