@@ -1,6 +1,19 @@
 <template>
     <Formulario @aoSalvarTarefa="salvarTarefa" />
     <div class="lista">
+        <div class="field">
+            <p class="control has-icons-left">
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Digite para filtrar"
+                    v-model="filtro"
+                />
+                <span class="icon is-small is-left">
+                    <i class="fas fa-search"></i>
+                </span>
+            </p>
+        </div>
         <Tarefa
             v-for="(tarefa, index) in tarefas"
             :key="index"
@@ -12,7 +25,9 @@
         >
         <div
             class="modal"
-            :class="{ 'is-active': tarefaSelecionada }" v-if="tarefaSelecionada">
+            :class="{ 'is-active': tarefaSelecionada }"
+            v-if="tarefaSelecionada"
+        >
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
@@ -37,7 +52,9 @@
                     </div>
                 </section>
                 <footer class="modal-card-foot">
-                    <button @click="alterarTarefa" class="button is-success">Salvar alterações</button>
+                    <button @click="alterarTarefa" class="button is-success">
+                        Salvar alterações
+                    </button>
                     <button @click="fecharModal" class="button">
                         Cancelar
                     </button>
@@ -48,12 +65,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import Formulario from "../components/Formulario.vue";
 import Tarefa from "../components/Tarefa.vue";
 import Box from "../components/Box.vue";
 import { useStore } from "@/store";
-import { ALTERAR_TAREFA, OBTER_PROJETOS, OBTER_TAREFAS } from "@/store/tipos-acoes";
+import {
+    ALTERAR_TAREFA,
+    OBTER_PROJETOS,
+    OBTER_TAREFAS,
+} from "@/store/tipos-acoes";
 import { CADASTRAR_TAREFA } from "@/store/tipos-acoes";
 import ITarefa from "@/interfaces/ITarefa";
 
@@ -79,9 +100,18 @@ export default defineComponent({
         store.dispatch(OBTER_TAREFAS);
         store.dispatch(OBTER_PROJETOS);
 
+        const filtro = ref("");
+
+        const tarefas = computed(() =>
+            store.state.tarefas.filter(
+                (t) => !filtro.value || t.descricao.includes(filtro.value)
+            )
+        );
+
         return {
-            tarefas: computed(() => store.state.tarefas),
+            tarefas,
             store,
+            filtro,
         };
     },
     methods: {
@@ -95,9 +125,10 @@ export default defineComponent({
             this.tarefaSelecionada = null;
         },
         alterarTarefa() {
-            this.store.dispatch(ALTERAR_TAREFA, this.tarefaSelecionada)
-                .then(() => this.fecharModal())
-        }
+            this.store
+                .dispatch(ALTERAR_TAREFA, this.tarefaSelecionada)
+                .then(() => this.fecharModal());
+        },
     },
 });
 </script>

@@ -44,6 +44,7 @@ export default defineComponent({
   color: var(--texto-primario);
 }
 .clicavel{
+    display: flex;
     cursor: pointer;
 }
 </style>
