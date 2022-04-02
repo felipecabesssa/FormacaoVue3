@@ -48,6 +48,15 @@
         "nome": "Alura Tracker 3.0"
       },
       "id": 3
+    },
+    {
+      "duracaoEmSegundos": 3,
+      "descricao": "teste",
+      "projeto": {
+        "id": 3,
+        "nome": "NinJava"
+      },
+      "id": 4
     }
   ]
 }
