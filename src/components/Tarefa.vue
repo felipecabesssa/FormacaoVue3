@@ -1,6 +1,6 @@
 <template>
   <Box>
-    <div class="columns" @click="tarefaClicada">
+    <div class="columns clicavel" @click="tarefaClicada">
       <div class="column is-4 corTexto">{{ tarefa.descricao || 'Tarefa sem descrição' }}</div>
       <div class="column">
         <Cronometro :tempoEmSegundos="tarefa.duracaoEmSegundos"/>
@@ -42,5 +42,8 @@ export default defineComponent({
 <style scoped>
 .corTexto{
   color: var(--texto-primario);
+}
+.clicavel{
+    cursor: pointer;
 }
 </style>
