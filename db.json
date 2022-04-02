@@ -33,7 +33,7 @@
     },
     {
       "duracaoEmSegundos": 2,
-      "descricao": "Refatoração do Vuex",
+      "descricao": "Refatoração",
       "projeto": {
         "id": 1,
         "nome": "Alura Tracker 3.0"
