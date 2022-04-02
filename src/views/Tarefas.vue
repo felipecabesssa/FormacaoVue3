@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, ref, watchEffect } from "vue";
 import Formulario from "../components/Formulario.vue";
 import Tarefa from "../components/Tarefa.vue";
 import Box from "../components/Box.vue";
@@ -90,30 +90,6 @@ export default defineComponent({
             tarefaSelecionada: null as ITarefa | null,
         };
     },
-    computed: {
-        listaEstaVazia(): boolean {
-            return this.tarefas.length === 0;
-        },
-    },
-    setup() {
-        const store = useStore();
-        store.dispatch(OBTER_TAREFAS);
-        store.dispatch(OBTER_PROJETOS);
-
-        const filtro = ref("");
-
-        const tarefas = computed(() =>
-            store.state.tarefas.filter(
-                (t) => !filtro.value || t.descricao.includes(filtro.value)
-            )
-        );
-
-        return {
-            tarefas,
-            store,
-            filtro,
-        };
-    },
     methods: {
         salvarTarefa(tarefa: ITarefa): void {
             this.store.dispatch(CADASTRAR_TAREFA, tarefa);
@@ -130,5 +106,35 @@ export default defineComponent({
                 .then(() => this.fecharModal());
         },
     },
+    computed: {
+        listaEstaVazia(): boolean {
+            return this.tarefas.length === 0;
+        },
+    },
+    setup() {
+        const store = useStore();
+        store.dispatch(OBTER_TAREFAS);
+        store.dispatch(OBTER_PROJETOS);
+
+        const filtro = ref("");
+
+        /* const tarefas = computed(() =>
+            store.state.tarefas.filter(
+                (t) => !filtro.value || t.descricao.includes(filtro.value)
+            )
+        ); */
+
+        watchEffect(() => {
+            store.dispatch(OBTER_TAREFAS, filtro.value);
+
+        })
+
+        return {
+            tarefas: computed(() => store.state.tarefa.tarefas),
+            store,
+            filtro,
+        };
+    },
+
 });
 </script>
